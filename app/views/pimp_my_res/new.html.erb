@@ -1,10 +1,12 @@
-<%= image_tag "spinnaz.gif", alt: "I heard you like rims, so we put rims on your rims so you can have rims while you have rims" %>
-<p>
-<h1>Pimp My Res</h1>
-
-<%= form_with url: "/pimp_my_res", method: :post, local: true do |form| %>
-  <%= form.label :job_posting_url, "|_| |2 |_:" %><br>
-  <%= form.text_field :job_posting_url, style: "width: 60%;" %>
-  <%= image_submit_tag "xzibit.jpg", alt: "Pimp that shit", style: "max-width: 200px;" %>
-<% end %>
-
+<!-- app/views/pimp_my_res/new.html.erb -->
+<div class="content-wrapper">
+  <%= image_tag "spinnaz.gif", alt: "I heard you like rims, so we put rims on your rims so you can have rims while you have rims" %>
+<br>
+  <h1>Pimp My Res</h1>
+<br>
+<br>
+  <%= form_with url: "/pimp_my_res", method: :post, local: true do |form| %>
+  <%= form.text_field :job_posting_url, style: "width: 60%;", placeholder: "|_| |2 |_", class: "white-placeholder" %><br><br>
+  <%= image_submit_tag "xzibit.jpg", alt: "Pimp that shit", style: "max-width: 150px;" %>
+  <% end %>
+</div>
