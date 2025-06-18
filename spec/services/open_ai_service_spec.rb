@@ -3,24 +3,21 @@ require 'rails_helper'
 RSpec.describe OpenAiService, type: :service do
   let(:service) { OpenAiService.new }
 
-  describe '#conn' do
-    it 'returns a Faraday connection object' do
-      connection = service.conn
-      expect(connection).to be_a(Faraday::Connection)
-      expect(connection.headers['Authorization']).to include('Bearer')
-      expect(connection.headers['Content-Type']).to eq('application/json')
-    end
-  end
+  describe '#chat_completion', :vcr do
+    it 'sends chat messages and returns parsed response' do
+      messages = [
+        { role: "system", content: "You are a professional resume-writing assistant." },
+        { role: "user", content: "Hello, who won the world series in 2020?" }
+      ]
 
-  describe '#get_url', :vcr do
-    it 'makes a GET request and returns parsed JSON' do
-      # Use a real or mock endpoint that returns JSON
-      service = OpenAiService.new
-      url = 'https://api.openai.com/v1/models'
-      response = service.get_url(url)
-      
-      expect(response).to be_a(Hash).or be_a(Array)
-      # You can add more specific expectations based on the API response shape
+      response = service.chat_completion(messages: messages)
+
+      expect(response).to be_a(Hash)
+      expect(response).to have_key(:choices)
+      expect(response[:choices]).to be_an(Array)
+      expect(response[:choices].first).to have_key(:message)
+      expect(response[:choices].first[:message]).to have_key(:content)
+      expect(response[:choices].first[:message][:content]).to be_a(String)
     end
   end
 end
