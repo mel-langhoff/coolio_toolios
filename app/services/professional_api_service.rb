@@ -16,25 +16,19 @@ class ProfessionalApiService
     JSON.parse(response.body, symbolize_names: true)
   end
 
-  # def self.get(path)
-  #   response = Faraday.get("#{BASE_URL}#{path}")
-  #   raise "API Error: #{response.status}" unless response.success?
-  #   JSON.parse(response.body)
-  # end
-
-  def self.skills
-    get("/api/v0/skills")
+  def skills
+    get_url("/api/v0/skills")
   end
 
-  # def self.experiences
+  # def experiences
   #   get("/api/v0/experiences")
   # end
 
-  # def self.projects
+  # def projects
   #   get("/api/v0/projects")
   # end
 
-  # def self.personal_details
+  # def personal_details
   #   get("/api/v0/personal_details")
   # end
 end
