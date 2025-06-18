@@ -49,7 +49,7 @@ gem "faraday"
 gem 'pg'
 gem "importmap-rails"
 gem "jsbundling-rails"
-gem "webpacker"
+# gem "webpacker"
 
 # // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 # import "@hotwired/turbo-rails"
