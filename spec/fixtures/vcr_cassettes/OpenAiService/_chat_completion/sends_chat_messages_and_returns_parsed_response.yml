@@ -5,11 +5,12 @@ http_interactions:
     uri: https://api.openai.com/v1/chat/completions
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4","messages":[{"role":"user","content":"Hello, who won
-        the world series in 2020?"}]}'
+      string: '{"model":"gpt-4","messages":[{"role":"system","content":"You are a
+        professional resume-writing assistant."},{"role":"user","content":"Hello,
+        who won the world series in 2020?"}]}'
     headers:
       Authorization:
-      - Bearer
+      - Bearer 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
       Content-Type:
       - application/json
       User-Agent:
@@ -20,49 +21,97 @@ http_interactions:
       - "*/*"
   response:
     status:
-      code: 401
-      message: Unauthorized
+      code: 200
+      message: OK
     headers:
       Date:
-      - Wed, 18 Jun 2025 20:41:27 GMT
+      - Wed, 18 Jun 2025 21:41:12 GMT
       Content-Type:
-      - application/json; charset=utf-8
-      Content-Length:
-      - '496'
+      - application/json
+      Transfer-Encoding:
+      - chunked
       Connection:
       - keep-alive
-      Vary:
-      - Origin
+      Access-Control-Expose-Headers:
+      - X-Request-ID
+      Openai-Organization:
+      - mel-langhoff
+      Openai-Processing-Ms:
+      - '674'
+      Openai-Version:
+      - '2020-10-01'
+      X-Envoy-Upstream-Service-Time:
+      - '679'
+      X-Ratelimit-Limit-Requests:
+      - '10000'
+      X-Ratelimit-Limit-Tokens:
+      - '10000'
+      X-Ratelimit-Remaining-Requests:
+      - '9999'
+      X-Ratelimit-Remaining-Tokens:
+      - '9975'
+      X-Ratelimit-Reset-Requests:
+      - 8.64s
+      X-Ratelimit-Reset-Tokens:
+      - 150ms
       X-Request-Id:
-      - req_223a28cd127e306207b83ca5f396b5e8
+      - req_85e5d495b0f4714e44678bac9f95891a
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=bbgd4iEUrd5thPVUJCfDJ6a.hcoQRlqwLs4_VnrQDuM-1750279287-1.0.1.1-ZJJ095l06ZrrvwHARXu70X99iqFcYiC8aAMcaIsLNXI.UmeqRdzyqgrHyDqeXv5LuSBKGnpm1KHBs9k2lGwWQzloc9KJYHwdLNScYtmNkCc;
-        path=/; expires=Wed, 18-Jun-25 21:11:27 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=sKHGyppCzopfyXH3EE1iKK7mbMl85tCElIfwaflltBg-1750282872-1.0.1.1-ZOcXaNnFARn9Xf.FUK1FzQ2m33faShawODgbX37QMBcCg1akXbRiTl1Mw8IJIxxlkNZNquw.0SWPUIAQGfOz3eBJPYcqDbTRaAAdA4CHBC8;
+        path=/; expires=Wed, 18-Jun-25 22:11:12 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=PLknO.1dbm2z1IdjQhJVqtxpAH6TrdSTP4tIi9K1LRw-1750279287277-0.0.1.1-604800000;
+      - _cfuvid=Jmv.49qDxfrcZX392FQ0_2qqz9BIyLJ_Q3_n0JAqemg-1750282872093-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       X-Content-Type-Options:
       - nosniff
       Server:
       - cloudflare
       Cf-Ray:
-      - 951d9b88bcb2533c-DEN
+      - 951df3083fef1f4a-DEN
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
-      encoding: UTF-8
+      encoding: ASCII-8BIT
       string: |
         {
-            "error": {
-                "message": "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.",
-                "type": "invalid_request_error",
-                "param": null,
-                "code": null
+          "id": "chatcmpl-Bjuopim4gtBrDQ5fPybl5K56p4vkQ",
+          "object": "chat.completion",
+          "created": 1750282871,
+          "model": "gpt-4-0613",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "The Los Angeles Dodgers won the World Series in 2020.",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": null,
+              "finish_reason": "stop"
             }
+          ],
+          "usage": {
+            "prompt_tokens": 31,
+            "completion_tokens": 13,
+            "total_tokens": 44,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": null
         }
-  recorded_at: Wed, 18 Jun 2025 20:41:27 GMT
+  recorded_at: Wed, 18 Jun 2025 21:41:12 GMT
 recorded_with: VCR 6.3.1
