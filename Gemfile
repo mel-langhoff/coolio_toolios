@@ -44,7 +44,7 @@ gem "bootsnap", require: false
 
 gem "bootstrap" 
 gem "faker"
-
+gem "dotenv-rails"
 gem 'jquery-rails'
 
 
