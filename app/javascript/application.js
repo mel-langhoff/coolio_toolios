@@ -4,3 +4,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 // import "bootstrap"  // if bootstrap is installed via importmap
 
+//= require jquery3
+//= require popper
+//= require bootstrap
+

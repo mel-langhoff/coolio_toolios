@@ -13,3 +13,9 @@
  *= require_tree .
  *= require_self
  */
+ @import "bootstrap";
+
+ input::placeholder {
+  color: white;
+  opacity: 1; /* Make sure the placeholder is fully opaque */
+}
