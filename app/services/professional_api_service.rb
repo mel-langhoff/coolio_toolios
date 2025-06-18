@@ -1,8 +1,4 @@
 class ProfessionalApiService
-  
-  # def initialize(data)
-  #   @data = data
-  # end
 
   def conn
     Faraday.new(url: "http://localhost:3000") do |faraday|
@@ -20,15 +16,15 @@ class ProfessionalApiService
     get_url("/api/v0/skills")
   end
 
-  # def experiences
-  #   get("/api/v0/experiences")
-  # end
+  def experiences
+    get("/api/v0/experiences")
+  end
 
-  # def projects
-  #   get("/api/v0/projects")
-  # end
+  def projects
+    get("/api/v0/projects")
+  end
 
-  # def personal_details
-  #   get("/api/v0/personal_details")
-  # end
+  def personal_details
+    get("/api/v0/personal_details")
+  end
 end
