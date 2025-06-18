@@ -14,26 +14,32 @@ class StreetCredScraperService
     @url = url
   end
 
-def cut_product
-  html = URI.open(@url)
-  doc = Nokogiri::HTML(html)
+  def cut_product
+    html = URI.open(@url)
+    doc = Nokogiri::HTML(html)
 
-  # Extract entire text from the page body
-  page_text = doc.at('body').text.downcase
+    # Extract entire text from the page body
+    page_text = doc.at('body')&.text&.downcase || ""
 
-  # Find keywords in the whole page text
-  found_keywords = KEYWORDS.select { |kw| page_text.include?(kw.downcase) }
+    # Find keywords in the whole page text
+    found_keywords = KEYWORDS.select { |kw| page_text.include?(kw.downcase) }
 
-    [{
-      title: title,
-      url: link['href']
-      keywords: found_keywords
-    }]
-  rescue OpenURI::HTTPError => e
-    puts "⚠️ Failed to scrape #{@url}: #{e.message}"
-    []
-end
+    # Attempt to extract title from <title> tag or use fallback
+    title = doc.at('title')&.text&.strip || "Untitled Job"
 
+      [{
+        title: title,
+        url: @url,
+        keywords: found_keywords
+      }]
+    rescue OpenURI::HTTPError => e
+      puts "⚠️ Failed to scrape #{@url}: #{e.message}"
+      []
+    rescue => e
+      puts "⚠️ Unexpected error: #{e.message}"
+      []
+    end
+  end
 
 
   private
@@ -46,5 +52,5 @@ end
     description_node ? description_node.text.strip : ""
   rescue
     ""
-  end
 end
+

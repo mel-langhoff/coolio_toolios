@@ -1,0 +1,3 @@
+class StreetCredController < ApplicationController
+  
+end

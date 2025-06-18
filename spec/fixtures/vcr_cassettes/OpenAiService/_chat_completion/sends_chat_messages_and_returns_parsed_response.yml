@@ -1,0 +1,68 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.openai.com/v1/chat/completions
+    body:
+      encoding: UTF-8
+      string: '{"model":"gpt-4","messages":[{"role":"user","content":"Hello, who won
+        the world series in 2020?"}]}'
+    headers:
+      Authorization:
+      - Bearer
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v2.13.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Date:
+      - Wed, 18 Jun 2025 20:41:27 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '496'
+      Connection:
+      - keep-alive
+      Vary:
+      - Origin
+      X-Request-Id:
+      - req_223a28cd127e306207b83ca5f396b5e8
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Cf-Cache-Status:
+      - DYNAMIC
+      Set-Cookie:
+      - __cf_bm=bbgd4iEUrd5thPVUJCfDJ6a.hcoQRlqwLs4_VnrQDuM-1750279287-1.0.1.1-ZJJ095l06ZrrvwHARXu70X99iqFcYiC8aAMcaIsLNXI.UmeqRdzyqgrHyDqeXv5LuSBKGnpm1KHBs9k2lGwWQzloc9KJYHwdLNScYtmNkCc;
+        path=/; expires=Wed, 18-Jun-25 21:11:27 GMT; domain=.api.openai.com; HttpOnly;
+        Secure; SameSite=None
+      - _cfuvid=PLknO.1dbm2z1IdjQhJVqtxpAH6TrdSTP4tIi9K1LRw-1750279287277-0.0.1.1-604800000;
+        path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 951d9b88bcb2533c-DEN
+      Alt-Svc:
+      - h3=":443"; ma=86400
+    body:
+      encoding: UTF-8
+      string: |
+        {
+            "error": {
+                "message": "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY), or as the password field (with blank username) if you're accessing the API from your browser and are prompted for a username and password. You can obtain an API key from https://platform.openai.com/account/api-keys.",
+                "type": "invalid_request_error",
+                "param": null,
+                "code": null
+            }
+        }
+  recorded_at: Wed, 18 Jun 2025 20:41:27 GMT
+recorded_with: VCR 6.3.1
