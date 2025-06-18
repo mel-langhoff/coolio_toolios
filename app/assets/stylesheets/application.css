@@ -13,7 +13,9 @@
  *= require_tree .
  *= require_self
  */
- @import "bootstrap";
+/* @import "node_modules/bootstrap/scss/bootstrap"; */
+
+
 
  input::placeholder {
   color: white;

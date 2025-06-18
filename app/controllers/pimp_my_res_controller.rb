@@ -24,7 +24,9 @@ class PimpMyResController < ApplicationController
 
     # You can render json or redirect with flash notice or render a result view
     # For now, let's just render JSON response of resume draft
-    render json: { resume_draft: result[:choices][0][:message][:content] }
+    @resume_draft = result[:choices][0][:message][:content]
+
+  render json: { resume_draft: result[:choices][0][:message][:content] }
   end
 
   private
