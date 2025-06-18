@@ -114,6 +114,10 @@ GEM
     date (3.4.1)
     diff-lcs (1.6.2)
     docile (1.4.1)
+    dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.3)
     erb (5.0.1)
     erubi (1.13.1)
@@ -126,7 +130,14 @@ GEM
       logger
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
+    ffi (1.17.0-aarch64-linux-gnu)
+    ffi (1.17.0-aarch64-linux-musl)
+    ffi (1.17.0-arm-linux-gnu)
+    ffi (1.17.0-arm-linux-musl)
     ffi (1.17.0-arm64-darwin)
+    ffi (1.17.0-x86_64-darwin)
+    ffi (1.17.0-x86_64-linux-gnu)
+    ffi (1.17.0-x86_64-linux-musl)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashdiff (1.2.0)
@@ -379,12 +390,14 @@ DEPENDENCIES
   bootsnap
   bootstrap
   capybara
+  dotenv-rails
   faker
   faraday
   importmap-rails
   jbuilder
   jquery-rails
   launchy
+  nokogiri
   orderly
   pg (~> 1.1)
   pry

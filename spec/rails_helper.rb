@@ -82,12 +82,17 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
-VCR.configure do |config|
-  config.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
-  config.hook_into :webmock
-  config.configure_rspec_metadata!
-  config.allow_http_connections_when_no_cassette = false
-  config.filter_sensitive_data('<OPENAI_API_KEY>') { Rails.application.credentials.openai_api_key }
+require 'vcr'
+
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
+  c.hook_into :webmock
+  c.configure_rspec_metadata!
+  c.allow_http_connections_when_no_cassette = false
+  c.ignore_localhost = true # IMPORTANT: ignores localhost calls, since your API runs locally
 end
+
 
 WebMock.disable_net_connect!(allow_localhost: true)

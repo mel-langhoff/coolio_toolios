@@ -1,8 +1,9 @@
 class PimpMyResController < ApplicationController
   def index
+    
   end
 
-  def optimize
-    
+  def scrape
+
   end
 end
