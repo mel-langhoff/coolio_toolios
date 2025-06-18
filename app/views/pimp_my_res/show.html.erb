@@ -4,3 +4,6 @@
   <br>
   <%= link_to "do it again", pimp_my_res_path, class: "btn" %>
 </div>
+<div class="resume-content">
+  <%= markdown(@resume_markdown).html_safe %>
+</div>

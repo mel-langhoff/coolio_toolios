@@ -4,6 +4,12 @@ class PimpMyResController < ApplicationController
   
   end
 
+  def show
+    # Assuming you have the resume draft stored in some variable, e.g.:
+    @resume_markdown = params[:resume_markdown] || "No resume data available."
+  end
+
+
  def create
   jobs_url = params[:job_posting_url] || "https://default.jobs.url"
 
@@ -20,10 +26,13 @@ class PimpMyResController < ApplicationController
 
   openai = OpenAiService.new
   result = openai.chat_completion(messages: messages)
-
+  @resume_markdown = result.dig(:choices, 0, :message, :content) || "No resume generated."
+  
   if result[:choices].present?
     @resume_draft = result[:choices][0][:message][:content]
-    render json: { resume_draft: @resume_draft }
+    
+    render :show
+    # render json: { resume_draft: @resume_draft }
   else
     error_message = result[:error] ? result[:error][:message] : "Unknown error from OpenAI"
     render json: { error: error_message }, status: :bad_request
