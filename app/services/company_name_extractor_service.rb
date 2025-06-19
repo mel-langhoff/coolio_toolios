@@ -1,3 +1,4 @@
+require 'nokogiri'
 class CompanyNameExtractorService
   def initialize(html)
     @doc = Nokogiri::HTML(html)
