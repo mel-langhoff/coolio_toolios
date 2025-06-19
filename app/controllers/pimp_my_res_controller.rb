@@ -9,78 +9,97 @@ class PimpMyResController < ApplicationController
     @resume_markdown = params[:resume_markdown] || "No resume data available."
   end
 
+  def create
+    jobs_url = params[:job_posting_url] || "https://default.jobs.url"
 
- def create
-  jobs_url = params[:job_posting_url] || "https://default.jobs.url"
+    # Call your internal API for user data
+    professional_data = {
+      skills: ProfessionalApiService.new.get_url("/api/v0/skills"),
+      experiences: ProfessionalApiService.new.get_url("/api/v0/experiences"),
+      projects: ProfessionalApiService.new.get_url("/api/v0/projects"),
+    }
 
-  professional_data = {
-    skills: ProfessionalApiService.new.get_url("/api/v0/skills"),
-    experiences: ProfessionalApiService.new.get_url("/api/v0/experiences"),
-    projects: ProfessionalApiService.new.get_url("/api/v0/projects"),
-    personal_details: ProfessionalApiService.new.get_url("/api/v0/personal_details")
-  }
+    # prints json
+      # puts JSON.pretty_generate(professional_data)
 
-  scraped_jobs = StreetCredScraperService.new(jobs_url).cut_product
+    # Scrape job data (you can tweak this to return useful values)
+    @scraped_jobs = StreetCredScraperService.new(jobs_url).cut_product
+        puts "Scraped jobs: #{@scraped_jobs}"
 
-  messages = build_messages(professional_data, scraped_jobs)
 
-  openai = OpenAiService.new
-  result = openai.chat_completion(messages: messages)
-  @resume_markdown = result.dig(:choices, 0, :message, :content) || "No resume generated."
-  
-  if result[:choices].present?
-    @resume_draft = result[:choices][0][:message][:content]
-    
-    render :show
-    # render json: { resume_draft: @resume_draft }
-  else
-    error_message = result[:error] ? result[:error][:message] : "Unknown error from OpenAI"
-    render json: { error: error_message }, status: :bad_request
+    messages = build_messages(professional_data, @scraped_jobs)
+    openai = OpenAiService.new
+    result = openai.chat_completion(messages: messages)
+
+
+    if result[:choices].present?
+      @resume_draft = result[:choices][0][:message][:content]
+      @resume_markdown = @resume_draft # you can process this separately if needed
+
+      # Extract some optional metadata from scraped_jobs
+      job_title = scraped_jobs.first["title"] rescue "Unknown Title"
+      # from user input
+      jobs_url = params[:job_posting_url]
+      # jobs_url = scraped_jobs.first["url"]
+      company = @scraped_jobs.first["company"] rescue "Unknown Company"
+      description = @scraped_jobs.first["description"] rescue "No description provided."
+
+      # Save to Hustle table
+      Rails.logger.info "Creating hustle record..."
+      @hustle = Hustle.create!(
+        job_url: jobs_url,
+        job_title: job_title,
+        company: company,
+        job_description: description,
+        resume: {
+          skills: professional_data[:skills],
+          experiences: professional_data[:experiences],
+          projects: professional_data[:projects],
+          generated_resume: @resume_draft
+        }
+      )
+    Rails.logger.info "Hustle created with ID: #{@hustle.id}"
+      if @hustle.save
+        Rails.logger.info "Hustle saved!"
+      else
+        Rails.logger.error "Hustle failed: #{@hustle.errors.full_messages.join(", ")}"
+      end
+
+      render :show
+    else
+      error_message = result[:error] ? result[:error][:message] : "Unknown error from OpenAI"
+      render json: { error: error_message }, status: :bad_request
+    end  
   end
-end
+
 
 
   private
+
+  def body_text
+    from_meta || from_title || fallback
+  end
+
+  def from_meta
+    @scraped_jobs.at("meta[property='og:site_name']")&.[]('content')
+  end
+
+  def from_title
+    title_text = @doc.at('title')&.text
+    title_text[/at\s+([A-Z][\w\s&\-]+)/i, 1]
+  end
+
+  def fallback
+    "Unknown Company"
+  end
 
   def build_messages(professional_data, scraped_jobs)
     [
       { role: "system", content: "You are a professional resume-writing assistant." },
       { role: "user", content: "Here is my professional data including skills, experiences, projects, and personal details:\n#{professional_data.to_json}" },
+      { role: "user", content: "What is the name of the company hiring for this role?\n\n#{body_text}" },
       { role: "user", content: "Here are some job listings I want to tailor my resume for:\n#{scraped_jobs.to_json}" },
-      { role: "user", content: "Please generate a resume draft in markdown format that highlights my skills and experiences aligned with the job listings." }
+      { role: "user", content: "Please generate a resume for professional experience and skills resume draft and also plug in key words from the posting in the resume and in markdown format that highlights my skills and experiences aligned with the job listings." }
     ]
   end
-  # def index
-  #   # Get the jobs URL from params, or use a default/fallback
-  #   jobs_url = params[:jobs_url] || "https://default.jobs.url"
-
-  #   professional_data = {
-  #     skills: ProfessionalApiService.new.get_url("/api/v0/skills"),
-  #     experiences: ProfessionalApiService.new.get_url("/api/v0/experiences"),
-  #     projects: ProfessionalApiService.new.get_url("/api/v0/projects"),
-  #     personal_details: ProfessionalApiService.new.get_url("/api/v0/personal_details")
-  #   }
-
-  #   scraped_jobs = StreetCredScraperService.new(jobs_url).cut_product
-
-  #   messages = build_messages(professional_data, scraped_jobs)
-
-  #   openai = OpenAiService.new
-  #   result = openai.chat_completion(messages: messages)
-
-  #   render json: {
-  #     resume_draft: result[:choices][0][:message][:content]
-  #   }
-  # end
-
-  # private
-
-  # def build_messages(professional_data, scraped_jobs)
-  #   [
-  #     { role: "system", content: "You are a professional resume-writing assistant." },
-  #     { role: "user", content: "Here is my professional data including skills, experiences, projects, and personal details:\n#{professional_data.to_json}" },
-  #     { role: "user", content: "Here are some job listings I want to tailor my resume for:\n#{scraped_jobs.to_json}" },
-  #     { role: "user", content: "Please generate a resume draft in markdown format that highlights my skills and experiences aligned with the job listings." }
-  #   ]
-  # end
 end

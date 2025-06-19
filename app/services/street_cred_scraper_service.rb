@@ -7,7 +7,7 @@ class StreetCredScraperService
     communication teamwork "problem solving" leadership collaboration
     experience responsibilities requirements qualifications projects deliverables deadlines
     developed designed implemented managed optimized automated tested
-    engineer developer manager consultant analyst
+    engineer developer manager consultant analyst company
   ].freeze
 
   def initialize(url)
@@ -15,31 +15,26 @@ class StreetCredScraperService
   end
 
   def cut_product
-    html = URI.open(@url)
-    doc = Nokogiri::HTML(html)
+  html = URI.open(@url)
+  doc = Nokogiri::HTML(html)
 
-    # Extract entire text from the page body
-    page_text = doc.at('body')&.text&.downcase || ""
+  title = doc.at('title')&.text&.strip || "Untitled Job"
+  company = CompanyNameExtractor.new(doc).extract
+  description = fetch_job_description_text(@url)
+  found_keywords = KEYWORDS.select { |kw| doc.at('body')&.text&.downcase&.include?(kw.downcase) }
 
-    # Find keywords in the whole page text
-    found_keywords = KEYWORDS.select { |kw| page_text.include?(kw.downcase) }
+  [{
+    title: title,
+    url: @url,
+    company: company,
+    description: description,
+    keywords: found_keywords
+  }]
+rescue => e
+  puts "Error scraping: #{e.message}"
+  []
+end
 
-    # Attempt to extract title from <title> tag or use fallback
-    title = doc.at('title')&.text&.strip || "Untitled Job"
-
-      [{
-        title: title,
-        url: @url,
-        keywords: found_keywords
-      }]
-    rescue OpenURI::HTTPError => e
-      puts "⚠️ Failed to scrape #{@url}: #{e.message}"
-      []
-    rescue => e
-      puts "⚠️ Unexpected error: #{e.message}"
-      []
-    end
-  end
 
 
   private
@@ -52,5 +47,6 @@ class StreetCredScraperService
     description_node ? description_node.text.strip : ""
   rescue
     ""
+  end
 end
 
