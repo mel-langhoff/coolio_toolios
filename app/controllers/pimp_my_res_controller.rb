@@ -76,22 +76,6 @@ class PimpMyResController < ApplicationController
 
   private
 
-  def body_text
-    from_meta || from_title || fallback
-  end
-
-  def from_meta
-    @scraped_jobs.at("meta[property='og:site_name']")&.[]('content')
-  end
-
-  def from_title
-    title_text = @doc.at('title')&.text
-    title_text[/at\s+([A-Z][\w\s&\-]+)/i, 1]
-  end
-
-  def fallback
-    "Unknown Company"
-  end
 
   def build_messages(professional_data, scraped_jobs)
     [

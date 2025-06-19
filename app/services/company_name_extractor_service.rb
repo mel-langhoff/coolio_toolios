@@ -1,7 +1,6 @@
-# app/services/company_name_extractor.rb
-class CompanyNameExtractor
-  def initialize(doc)
-    @doc = doc
+class CompanyNameExtractorService
+  def initialize(html)
+    @doc = Nokogiri::HTML(html)
   end
 
   def extract
