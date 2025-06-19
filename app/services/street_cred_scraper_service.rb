@@ -17,14 +17,13 @@ class StreetCredScraperService
 
   def cut_product
     
-    html = URI.open(@url)
-    puts html.read[0..1000] # Just to inspect
+    html = URI.open(@url).read
 
     doc = Nokogiri::HTML(html)
 
     title = doc.at('title')&.text&.strip || "Untitled Job"
-    # company = CompanyNameExtractor.new(doc).extract
-    company = "Bitchin Company"
+    company = CompanyNameExtractorService.new(html).extract
+    # company = "Bitchin Company"
     description = fetch_job_description_text(@url)
     found_keywords = KEYWORDS.select { |kw| doc.at('body')&.text&.downcase&.include?(kw.downcase) }
 
