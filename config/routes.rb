@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get '/chatbot', to: 'xzibit#index', as: :xzibit
 
   get 'hustles', to: 'hustles#index'
-  get 'hustles/show', to: 'hustles#show'
+  get 'hustles/:id', to: 'hustles#show'
   get 'hustles/new', to: 'hustles#new'
   get 'hustles/create', to: 'hustles#create'
   get 'hustles/edit', to: 'hustles#edit'

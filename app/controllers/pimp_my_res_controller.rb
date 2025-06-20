@@ -1,52 +1,36 @@
 class PimpMyResController < ApplicationController
-
   def new
-  
+  def show
+    @hustle = Hustle.find(params[:id])
+    @resume_markdown = @hustle.resume["generated_resume"]
   end
 
-  def show
-    # Assuming you have the resume draft stored in some variable, e.g.:
-    @resume_markdown = params[:resume_markdown] || "No resume data available."
   end
 
   def create
     jobs_url = params[:job_posting_url] || "https://default.jobs.url"
 
-    # Call your internal API for user data
     professional_data = {
       skills: ProfessionalApiService.new.get_url("/api/v0/skills"),
       experiences: ProfessionalApiService.new.get_url("/api/v0/experiences"),
       projects: ProfessionalApiService.new.get_url("/api/v0/projects"),
     }
 
-    # prints json
-      # puts JSON.pretty_generate(professional_data)
-
-    # Scrape job data (you can tweak this to return useful values)
     @scraped_jobs = StreetCredScraperService.new(jobs_url).cut_product
-        puts "Scraped jobs: #{@scraped_jobs}"
-
+    Rails.logger.info "Scraped jobs: #{@scraped_jobs}"
 
     messages = build_messages(professional_data, @scraped_jobs)
     openai = OpenAiService.new
     result = openai.chat_completion(messages: messages)
 
-
     if result[:choices].present?
       @resume_draft = result[:choices][0][:message][:content]
-      @resume_markdown = @resume_draft # you can process this separately if needed
+      @resume_markdown = @resume_draft
 
-      # Extract some optional metadata from scraped_jobs
-      job_title = scraped_jobs.first["title"] rescue "Unknown Title"
-      # from user input
-      jobs_url = params[:job_posting_url]
-      # jobs_url = scraped_jobs.first["url"]
-      html = URI.open(jobs_url).read
-    company = CompanyNameExtractorService.new(html).extract
-      description = @scraped_jobs.first["description"] rescue "No description provided."
+      job_title = @scraped_jobs.first["title"]
+      company = CompanyNameExtractorService.new(URI.open(jobs_url).read).extract
+      description = @scraped_jobs.first["description"]
 
-      # Save to Hustle table
-      Rails.logger.info "Creating hustle record..."
       @hustle = Hustle.create!(
         job_url: jobs_url,
         job_title: job_title,
@@ -59,24 +43,21 @@ class PimpMyResController < ApplicationController
           generated_resume: @resume_draft
         }
       )
-    Rails.logger.info "Hustle created with ID: #{@hustle.id}"
-      if @hustle.save
-        Rails.logger.info "Hustle saved!"
-      else
-        Rails.logger.error "Hustle failed: #{@hustle.errors.full_messages.join(", ")}"
-      end
 
-      render :show
+      redirect_to pimp_my_res_show_path(@hustle.id)
     else
       error_message = result[:error] ? result[:error][:message] : "Unknown error from OpenAI"
       render json: { error: error_message }, status: :bad_request
     end  
   end
 
-
+  def show
+    # Here you should load the hustle or resume to display
+    @hustle = Hustle.find(params[:id])
+    @resume_markdown = @hustle.resume["generated_resume"]
+  end
 
   private
-
 
   def build_messages(professional_data, scraped_jobs)
     [

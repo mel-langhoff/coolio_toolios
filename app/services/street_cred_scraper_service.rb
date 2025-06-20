@@ -21,7 +21,7 @@ class StreetCredScraperService
 
     doc = Nokogiri::HTML(html)
 
-    title = doc.at('title')&.text&.strip || "Untitled Job"
+    title = doc.at('title')&.text&.strip
     company = CompanyNameExtractorService.new(html).extract
     # company = "Bitchin Company"
     description = fetch_job_description_text(@url)
