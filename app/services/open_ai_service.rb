@@ -14,4 +14,14 @@ class OpenAiService
     response = conn.get(url)
     JSON.parse(response.body, symbolize_names: true)
   end
+
+  def chat_completion(messages:, model: "gpt-4")
+    body = {
+      model: model,
+      messages: messages
+    }.to_json
+
+    response = conn.post('/v1/chat/completions', body)
+    JSON.parse(response.body, symbolize_names: true)
+  end
 end
