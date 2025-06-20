@@ -41,7 +41,8 @@ class PimpMyResController < ApplicationController
       # from user input
       jobs_url = params[:job_posting_url]
       # jobs_url = scraped_jobs.first["url"]
-      company = @scraped_jobs.first["company"] rescue "Unknown Company"
+      html = URI.open(jobs_url).read
+    company = CompanyNameExtractorService.new(html).extract
       description = @scraped_jobs.first["description"] rescue "No description provided."
 
       # Save to Hustle table
@@ -81,7 +82,6 @@ class PimpMyResController < ApplicationController
     [
       { role: "system", content: "You are a professional resume-writing assistant." },
       { role: "user", content: "Here is my professional data including skills, experiences, projects, and personal details:\n#{professional_data.to_json}" },
-      { role: "user", content: "What is the name of the company hiring for this role?\n\n#{body_text}" },
       { role: "user", content: "Here are some job listings I want to tailor my resume for:\n#{scraped_jobs.to_json}" },
       { role: "user", content: "Please generate a resume for professional experience and skills resume draft and also plug in key words from the posting in the resume and in markdown format that highlights my skills and experiences aligned with the job listings." }
     ]

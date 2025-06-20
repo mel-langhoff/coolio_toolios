@@ -15,10 +15,11 @@ class OpenAiService
     JSON.parse(response.body, symbolize_names: true)
   end
 
-  def chat_completion(messages:, model: "gpt-4")
+  def chat_completion(messages:, model: "gpt-4-turbo")
     body = {
       model: model,
-      messages: messages
+      messages: messages,
+      max_tokens: 150
     }.to_json
 
     response = conn.post('/v1/chat/completions', body)
