@@ -5,12 +5,12 @@ http_interactions:
     uri: https://api.openai.com/v1/chat/completions
     body:
       encoding: UTF-8
-      string: '{"model":"gpt-4","messages":[{"role":"system","content":"You are a
-        professional resume-writing assistant."},{"role":"user","content":"Hello,
-        who won the world series in 2020?"}]}'
+      string: '{"model":"gpt-4-turbo","messages":[{"role":"system","content":"You
+        are a professional resume-writing assistant."},{"role":"user","content":"Hello,
+        who won the world series in 2020?"}],"max_tokens":150}'
     headers:
       Authorization:
-      - Bearer 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
+      - Bearer <OPENAI_API_KEY>
       Content-Type:
       - application/json
       User-Agent:
@@ -25,7 +25,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 18 Jun 2025 21:41:12 GMT
+      - Sun, 22 Jun 2025 14:48:29 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -37,57 +37,57 @@ http_interactions:
       Openai-Organization:
       - mel-langhoff
       Openai-Processing-Ms:
-      - '674'
+      - '1312'
       Openai-Version:
       - '2020-10-01'
       X-Envoy-Upstream-Service-Time:
-      - '679'
+      - '1315'
       X-Ratelimit-Limit-Requests:
-      - '10000'
+      - '500'
       X-Ratelimit-Limit-Tokens:
-      - '10000'
+      - '30000'
       X-Ratelimit-Remaining-Requests:
-      - '9999'
+      - '499'
       X-Ratelimit-Remaining-Tokens:
-      - '9975'
+      - '29975'
       X-Ratelimit-Reset-Requests:
-      - 8.64s
+      - 120ms
       X-Ratelimit-Reset-Tokens:
-      - 150ms
+      - 50ms
       X-Request-Id:
-      - req_85e5d495b0f4714e44678bac9f95891a
+      - req_8935dab41d6336759374154853456294
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=sKHGyppCzopfyXH3EE1iKK7mbMl85tCElIfwaflltBg-1750282872-1.0.1.1-ZOcXaNnFARn9Xf.FUK1FzQ2m33faShawODgbX37QMBcCg1akXbRiTl1Mw8IJIxxlkNZNquw.0SWPUIAQGfOz3eBJPYcqDbTRaAAdA4CHBC8;
-        path=/; expires=Wed, 18-Jun-25 22:11:12 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=96XWoPhSubxc5fhnXebO4jcTNNp17DuaMjotvqzfwZU-1750603709-1.0.1.1-QTgf03mr4OXXVLTLDXlU7elWV.BWnJqNVSN4yRYjxDk18mSpfKDWNvyQVqp0UA.2oCJH9_wfmF0MZIO_F.muUCDn3Hfz1.9D5Zx9Ci5JOFY;
+        path=/; expires=Sun, 22-Jun-25 15:18:29 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=Jmv.49qDxfrcZX392FQ0_2qqz9BIyLJ_Q3_n0JAqemg-1750282872093-0.0.1.1-604800000;
+      - _cfuvid=bvoAI_hVEwKIIkDe9e.IwhcjYMUylB7Sa_w.vpyUczw-1750603709231-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       X-Content-Type-Options:
       - nosniff
       Server:
       - cloudflare
       Cf-Ray:
-      - 951df3083fef1f4a-DEN
+      - 953c8bf329c81f31-DEN
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |
         {
-          "id": "chatcmpl-Bjuopim4gtBrDQ5fPybl5K56p4vkQ",
+          "id": "chatcmpl-BlGHbxlCIzBB1YiDZY8PVWlIIBlpr",
           "object": "chat.completion",
-          "created": 1750282871,
-          "model": "gpt-4-0613",
+          "created": 1750603707,
+          "model": "gpt-4-turbo-2024-04-09",
           "choices": [
             {
               "index": 0,
               "message": {
                 "role": "assistant",
-                "content": "The Los Angeles Dodgers won the World Series in 2020.",
+                "content": "The Los Angeles Dodgers won the World Series in 2020. They defeated the Tampa Bay Rays to capture the title, winning the series 4-2. This victory marked the Dodgers' seventh World Series championship in franchise history and their first since 1988.",
                 "refusal": null,
                 "annotations": []
               },
@@ -97,8 +97,8 @@ http_interactions:
           ],
           "usage": {
             "prompt_tokens": 31,
-            "completion_tokens": 13,
-            "total_tokens": 44,
+            "completion_tokens": 53,
+            "total_tokens": 84,
             "prompt_tokens_details": {
               "cached_tokens": 0,
               "audio_tokens": 0
@@ -111,7 +111,7 @@ http_interactions:
             }
           },
           "service_tier": "default",
-          "system_fingerprint": null
+          "system_fingerprint": "fp_de235176ee"
         }
-  recorded_at: Wed, 18 Jun 2025 21:41:12 GMT
+  recorded_at: Sun, 22 Jun 2025 14:48:30 GMT
 recorded_with: VCR 6.3.1

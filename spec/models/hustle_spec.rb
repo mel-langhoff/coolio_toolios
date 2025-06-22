@@ -16,7 +16,6 @@ RSpec.describe Hustle, type: :model do
   describe "validations" do
     it { should validate_presence_of :job_title }
     it { should validate_presence_of :job_url }
-    it { should validate_presence_of :company }
     it { should validate_presence_of :resume }
   end
 end

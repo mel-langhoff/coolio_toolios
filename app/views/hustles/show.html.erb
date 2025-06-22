@@ -1,2 +1,23 @@
-<h1>Hustles#show</h1>
-<p>Find me in app/views/hustles/show.html.erb</p>
+<!-- app/views/pimp_my_res/show.html.erb -->
+
+<div class="resume-output">
+  <h1>Finna get ya a job</h1>
+  <h2>Hustle for <%= @hustle.job_title %> at <%= @hustle.company %></h2>
+  <p><strong>Job URL:</strong> <%= link_to @hustle.job_url, @hustle.job_url, target: "_blank" %></p>
+  <p><strong>Description:</strong> <%= @hustle.job_description %></p>
+
+  <h2>Generated Resume</h2>
+  <%= render partial: "resumes/formatted_resume", locals: { resume_markdown: @hustle.resume["generated_resume"] } %>
+
+  <%= link_to "Do it again", pimp_my_res_path, class: "btn btn-primary my-3" %>
+
+  <details class="mt-4">
+    <summary>🛠 Structured Resume JSON</summary>
+    <pre><%= JSON.pretty_generate(@hustle.resume) %></pre>
+  </details>
+</div>
+
+<div class="resume-content mt-4">
+  <h3>Raw Markdown (fallback)</h3>
+  <pre style="white-space: pre-wrap; font-family: monospace;"><%= @hustle.resume["generated_resume"] %></pre>
+</div>

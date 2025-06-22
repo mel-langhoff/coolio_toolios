@@ -5,8 +5,7 @@ class CompanyNameExtractorService
   end
 
   def extract
-    from_meta || from_title
-    # || fallback
+    from_meta || from_title || fallback
   end
 
   private
@@ -20,7 +19,7 @@ class CompanyNameExtractorService
     title_text[/at\s+([A-Z][\w\s&\-]+)/i, 1]
   end
 
-  # def fallback
-  #   "Unknown Company"
-  # end
+  def fallback
+    "Unknown Company"
+  end
 end
