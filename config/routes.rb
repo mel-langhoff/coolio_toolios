@@ -13,4 +13,8 @@ Rails.application.routes.draw do
   get 'hustles/edit', to: 'hustles#edit'
   get 'hustles/update', to: 'hustles#update'
   get 'hustles/destroy', to: 'hustles#destroy'
+
+  get 'peep_res/:id', to: 'pimp_my_res#show', as: :peep_res
+
+  get 'resume_pdf/:id', to: 'resumes#show'
 end

@@ -212,6 +212,7 @@ GEM
     orderly (0.1.1)
       capybara (>= 1.1)
       rspec (>= 2.14)
+    ostruct (0.6.2)
     parallel (1.25.1)
     parser (3.3.4.0)
       ast (~> 2.4.1)
@@ -371,6 +372,9 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    wicked_pdf (2.8.2)
+      activesupport
+      ostruct
     xpath (3.2.0)
       nokogiri (~> 1.8)
     zeitwerk (2.7.3)
@@ -417,6 +421,7 @@ DEPENDENCIES
   vcr
   web-console
   webmock
+  wicked_pdf
 
 RUBY VERSION
    ruby 3.2.3p157

@@ -4,7 +4,7 @@ require_relative 'company_name_extractor_service'
 
 class StreetCredScraperService
   KEYWORDS = %w[
-    Ruby Rails JavaScript React SQL AWS Docker Kubernetes Python Git REST API
+    Ruby Rails JavaScript React SQL Docker Git REST API
     communication teamwork "problem solving" leadership collaboration
     experience responsibilities requirements qualifications projects deliverables deadlines
     developed designed implemented managed optimized automated tested

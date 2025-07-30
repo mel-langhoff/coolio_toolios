@@ -25,7 +25,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Sun, 22 Jun 2025 14:48:29 GMT
+      - Sun, 22 Jun 2025 15:05:06 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -37,11 +37,11 @@ http_interactions:
       Openai-Organization:
       - mel-langhoff
       Openai-Processing-Ms:
-      - '1312'
+      - '1194'
       Openai-Version:
       - '2020-10-01'
       X-Envoy-Upstream-Service-Time:
-      - '1315'
+      - '1198'
       X-Ratelimit-Limit-Requests:
       - '500'
       X-Ratelimit-Limit-Tokens:
@@ -55,39 +55,39 @@ http_interactions:
       X-Ratelimit-Reset-Tokens:
       - 50ms
       X-Request-Id:
-      - req_8935dab41d6336759374154853456294
+      - req_6d6f4d3333c15c85aa1b4b23bcea5d1e
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cf_bm=96XWoPhSubxc5fhnXebO4jcTNNp17DuaMjotvqzfwZU-1750603709-1.0.1.1-QTgf03mr4OXXVLTLDXlU7elWV.BWnJqNVSN4yRYjxDk18mSpfKDWNvyQVqp0UA.2oCJH9_wfmF0MZIO_F.muUCDn3Hfz1.9D5Zx9Ci5JOFY;
-        path=/; expires=Sun, 22-Jun-25 15:18:29 GMT; domain=.api.openai.com; HttpOnly;
+      - __cf_bm=AO6JCelkbiOGIsuiLG2_RWqQBrwZ5YBD5FUNJRA5HU4-1750604706-1.0.1.1-cP5erGniMazl946nldgoxfOdWBvYwiRAHiCrYlhv9YIB0eqg54dEPjBWQotw1gvA1QerqKZzFFbPDGsi9PztiB4o3R6ae4QTofbAJnNATRY;
+        path=/; expires=Sun, 22-Jun-25 15:35:06 GMT; domain=.api.openai.com; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=bvoAI_hVEwKIIkDe9e.IwhcjYMUylB7Sa_w.vpyUczw-1750603709231-0.0.1.1-604800000;
+      - _cfuvid=5ZJ7Phe9tGhPf8y0f5ULBTwjiBPmu9fbsNA9Dnanzhk-1750604706789-0.0.1.1-604800000;
         path=/; domain=.api.openai.com; HttpOnly; Secure; SameSite=None
       X-Content-Type-Options:
       - nosniff
       Server:
       - cloudflare
       Cf-Ray:
-      - 953c8bf329c81f31-DEN
+      - 953ca44ce8711f32-DEN
       Alt-Svc:
       - h3=":443"; ma=86400
     body:
       encoding: ASCII-8BIT
       string: |
         {
-          "id": "chatcmpl-BlGHbxlCIzBB1YiDZY8PVWlIIBlpr",
+          "id": "chatcmpl-BlGXhAapdAgD6hUSLeWfxSOiu23Oy",
           "object": "chat.completion",
-          "created": 1750603707,
+          "created": 1750604705,
           "model": "gpt-4-turbo-2024-04-09",
           "choices": [
             {
               "index": 0,
               "message": {
                 "role": "assistant",
-                "content": "The Los Angeles Dodgers won the World Series in 2020. They defeated the Tampa Bay Rays to capture the title, winning the series 4-2. This victory marked the Dodgers' seventh World Series championship in franchise history and their first since 1988.",
+                "content": "The Los Angeles Dodgers won the 2020 World Series. They defeated the Tampa Bay Rays to claim the championship, marking their seventh World Series title in franchise history and their first since 1988.",
                 "refusal": null,
                 "annotations": []
               },
@@ -97,8 +97,8 @@ http_interactions:
           ],
           "usage": {
             "prompt_tokens": 31,
-            "completion_tokens": 53,
-            "total_tokens": 84,
+            "completion_tokens": 40,
+            "total_tokens": 71,
             "prompt_tokens_details": {
               "cached_tokens": 0,
               "audio_tokens": 0
@@ -113,5 +113,5 @@ http_interactions:
           "service_tier": "default",
           "system_fingerprint": "fp_de235176ee"
         }
-  recorded_at: Sun, 22 Jun 2025 14:48:30 GMT
+  recorded_at: Sun, 22 Jun 2025 15:05:08 GMT
 recorded_with: VCR 6.3.1
