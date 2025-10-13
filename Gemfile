@@ -46,6 +46,8 @@ gem "bootstrap"
 gem "faker"
 gem "dotenv-rails"
 gem 'jquery-rails'
+gem 'ruby-openai'
+
 
 
 

@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   get 'hustles/edit', to: 'hustles#edit'
   get 'hustles/update', to: 'hustles#update'
   get 'hustles/destroy', to: 'hustles#destroy'
+  
+  root "pimp_my_res#new"
 end
