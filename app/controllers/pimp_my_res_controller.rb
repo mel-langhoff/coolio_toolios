@@ -92,6 +92,19 @@ class PimpMyResController < ApplicationController
     end
   end
 
+def pdf
+  @hustle = Hustle.find(params[:id])
+  render pdf: "resume_#{@hustle.id}",
+         template: "pimp_my_res/pdf",
+         layout: "pdf",
+         page_size: 'Letter',
+         margin: { top: 15, bottom: 15, left: 15, right: 15 },
+         encoding: "UTF-8",
+         locals: { hustle: @hustle }
+end
+
+
+
   private
 
   def build_messages(professional_data, scraped_job, body_text)
@@ -105,14 +118,17 @@ class PimpMyResController < ApplicationController
     [
       { role: "system", content: "You are a professional resume-writing assistant with over thirty years of experience looking at, writing, and hiring people in the IT field for software developers, project managers, SAP, and anything else IT..." },
       { role: "user", content: "Here is a short writing sample that represents my tone, used punctuation, type of word usage and adjective and syntax choices, and overall type and cool and bitchin' style:\n\n#{writing_sample}, so please attempt to replicate as best as you can but nobody can beat the best, can they? :)" },
-      { role: "user", content: "Here is my professional data including skills, experiences, projects, and personal details:\n#{professional_data.to_json}, so use these and emphasize them in the resume and really dig deep, but avoid using typical and stereotypical resume buzzwords but make it sound human, fancy, and 100% fuckin' bitchin'. Put at least two bullet points per job that are at least a fifteen to twenty word sentence where one describes the job and one highlights and accomplishment I did or describes my workload or something really fucking cool that is impressive I did that shines brighter than the biggest star in our universe." },
-      { role: "user", content: "Here is the job posting I want to tailor my resume for:\n#{job_description}\n\nExtracted and AI-enhanced keywords are:\n#{job_keywords.join(', ')}.\nUse these keywords naturally throughout the resume, focusing on aligning my actual skills and experience to them. Do not invent anything." },
+      { role: "user", content: "Here is my professional data including skills, experiences, projects, and personal details:\n#{professional_data.to_json}, so use these and emphasize them in the resume and really dig deep, but avoid using typical and stereotypical resume buzzwords but make it sound human, fancy, and fuckin' bitchin'. Put at least two bullet points per job that are at least a ten to fifteen word sentence where one describes the job and one highlights and accomplishment I did or describes my workload or something really fucking cool that is impressive I did that shines brighter than the biggest star in our universe." },
+      { role: "user", content: "Here is the job posting I want to tailor my resume for:\n#{job_description}\n\nExtracted and AI-enhanced keywords are:\n#{job_keywords.join(', ')}.\nUse these keywords naturally throughout the resume, focusing on aligning my actual skills and experience to them. Do not invent anything. Use the past tense for jobs in the past, which are all of the jobs. Only include three jobs that are the most relevant, which will be IT. Try not to include the tutoring job. Include the most recent and relevant jobs first." },
       { role: "user", content: "When integrating job keywords, match them to my real skills from professional_data where possible, and subtly reinforce them using my phrasing style from the writing_sample. Do not list the keywords in their own section or repeat them verbatim." },
       { role: "user", content: "The job posting includes extracted and AI-enhanced keywords. Intelligently incorporate these keywords throughout the resume—especially in the skills, experience bullet points, and project sections—but only where they make sense naturally. Do not force or repeat keywords unnaturally, and do not invent new technologies or skills that are not part of my professional data." },
       { role: "user", content: "Use the following as my baseline resume format. Update it to match the job posting while keeping my tone and layout:\n\n#{base_resume}. Keep it so the resume is under one page. Alphabetize the skills and arrange the jobs in order by most recent the least recent. Avoid using the following words or phrases in the final text: #{excluded_list}. Keep the format exactly the same please! I love you ,chat!" },
-      { role: "user", content: "Generate the resume in Markdown format only — no commentary, preambles, or follow-up text. Do not include any friendly language or extra explanation. The output should be only the formatted resume content. Thank you, you're my favorite ever, chatgpt." },
+      { role: "user", content: "Do not use Markdown at all in the generation at all in any part of it (like ## or ###). Use bold text and plain formatting like a traditional resume document instead." },
+      { role: "user", content: "Generate the resume with no commentary, preambles, or follow-up text. Do not include any friendly language or extra explanation. The output should be only the formatted resume content. Thank you, you're my favorite ever, chatgpt." },
       { role: "user", content: "Do NOT add or invent new employers, job titles, or companies that I have not actually worked for. Never include the company I'm applying to in my work history." },
+      { role: "user", content: "Don't include my projects unless it's for a software developer job because they are irrelevant unless it's for a technical project management job. Use your smarts and judgment if the project is relevant for the job or not. If only one project is relevant, do not put it, if two or more projects are relevant, put them but do not put more than three. Put only one or two short sentences about each project. Do not have the projects take up more than a quarter to one third of the resume. Give a description of the project and what it does, do not just say that it showcases my skills say HOW it showcases my skills. If there is not enough data to say how it showcases my skills, leave it off." },
       { role: "user", content: "This is my future here. My future is in your hands, just like Bunny's life was in The Dude's hands, my life is in your hands, Chat. <3"}
+
     ]
   end
 

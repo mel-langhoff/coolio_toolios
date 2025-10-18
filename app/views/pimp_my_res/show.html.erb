@@ -1,6 +1,8 @@
-<div class="resume-output">
-
 <br>
 <div class="resume-content">
-  <pre style="white-space: pre-wrap; font-family: monospace;"><%= @resume_draft %></pre>
+  <%= markdown(@resume_draft).html_safe %>
 </div>
+
+
+<%= link_to "Download as PDF", pdf_pimp_my_res_path(@hustle, format: :pdf),
+            class: "btn btn-primary ", target: "_blank" %>
