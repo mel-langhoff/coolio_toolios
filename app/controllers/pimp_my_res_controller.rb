@@ -105,7 +105,7 @@ def pdf
          html: html,
          page_size: 'Letter',
          encoding: "UTF-8",
-         margin: { top: 15, bottom: 15, left: 15, right: 15 },
+         margin: { top: 10, bottom: 10, left: 8, right: 8 },
          disable_smart_shrinking: false,
          show_as_html: params.key?('debug') # use ?debug to preview html
 end
@@ -134,7 +134,7 @@ end
       { role: "user", content: "Use the following as my baseline resume format. Update it to match the job posting while keeping my tone and layout:\n\n#{base_resume}. Keep it so the resume is under one pdf page. Alphabetize the skills and arrange the jobs in order by most recent the least recent. Avoid using the following words or phrases in the final text: #{excluded_list}. Keep the format exactly the same please! I love you ,chat!" },
       { role: "user", content: "Output the entire resume in pure Markdown format. Use '-' for bullet points  and normal text for body content. Do not include any HTML tags or code blocks. Keep all formatting Markdown-only." },
       { role: "user", content: "Generate the resume with no commentary, preambles, or follow-up text. Do not include any friendly language or extra explanation. The output should be only the formatted resume content. Thank you, you're my favorite ever, chatgpt." },
-      { role: "user", content: "Do NOT add or invent new employers, job titles, or companies that I have not actually worked for. Never include the company I'm applying to in my work history." },
+      { role: "user", content: "Do NOT add or invent new employers, job titles, or companies that I have not actually worked for. Never include the company I'm applying to in my work history. Do not use any incarnation of the word synergy" },
       { role: "user", content: "Don't include my projects unless it's for a software developer job because they are irrelevant unless it's for a technical project management job. Use your smarts and judgment if the project is relevant for the job or not. If only one project is relevant, do not put it, if two or more projects are relevant, put them but do not put more than three. Put only one or two short sentences about each project. Do not have the projects take up more than a quarter to one third of the resume. Give a description of the project and what it does, do not just say that it showcases my skills say HOW it showcases my skills. If there is not enough data to say how it showcases my skills, leave it off." },
       { role: "user", content: "This is my future here. My future is in your hands, just like Bunny's life was in The Dude's hands, my life is in your hands, Chat. <3"}
 

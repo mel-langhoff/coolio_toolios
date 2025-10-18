@@ -8,3 +8,5 @@ Python
 Nodejs
 Champion
 Championed
+synergistic
+synergy
