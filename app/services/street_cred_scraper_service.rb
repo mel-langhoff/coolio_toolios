@@ -1,9 +1,8 @@
-# app/services/street_cred_scraper_service.rb
-require 'nokogiri'
-require 'open-uri'
-require 'json'
-require_relative 'company_name_extractor_service'
-require 'openai'
+require "nokogiri"
+require "open-uri"
+require "json"
+require_relative "company_name_extractor_service"
+require "openai"
 
 class StreetCredScraperService
   BASE_KEYWORDS = %w[
@@ -24,15 +23,15 @@ class StreetCredScraperService
   end
 
   def cut_product
-    html = URI.open(@url).read
+    html = URI.open(@url, "User-Agent" => "Mozilla/5.0").read
     doc  = Nokogiri::HTML(html)
 
-    title       = doc.at('title')&.text&.strip || "Untitled Job"
+    title       = doc.at("title")&.text&.strip || "Untitled Job"
     company     = CompanyNameExtractorService.new(html).extract
-    description = fetch_job_description_text(@url)
+    description = fetch_job_description_text(doc)
 
     found_keywords = BASE_KEYWORDS.select do |kw|
-      doc.at('body')&.text&.downcase&.include?(kw.downcase)
+      doc.at("body")&.text&.downcase&.include?(kw.downcase)
     end
 
     ai_keywords = enhance_keywords_with_openai(description, found_keywords)
@@ -54,19 +53,30 @@ class StreetCredScraperService
 
   private
 
-  def fetch_job_description_text(job_url)
-    html = URI.open(job_url)
-    doc  = Nokogiri::HTML(html)
-    description_node = doc.at_css('.job-description') ||
-                       doc.at_css('.description') ||
-                       doc.at('body')
-    description_node ? description_node.text.strip : ""
+  # 🧠 Smarter text extraction for ZipRecruiter, Indeed, LinkedIn, etc.
+  def fetch_job_description_text(doc)
+    possible_selectors = [
+      "section.job_description",
+      "div.job_description",
+      "div.jobDescriptionSection",
+      "div.jobDesc",
+      "div.job-body",
+      "article",
+      "main",
+      "body"
+    ]
+
+    node = possible_selectors.map { |s| doc.at_css(s) }.compact.first
+    text = node ? node.text.strip : ""
+
+    # Clean up whitespace and nonprintable chars
+    text.gsub(/\s+/, " ").strip
   rescue => e
     puts "Description scrape error: #{e.message}"
     ""
   end
 
-  # 🪄 Enhance keywords using OpenAI (find implied & semantic matches)
+  # 🪄 Enhance keywords using OpenAI
   def enhance_keywords_with_openai(description, found_keywords)
     return [] if description.to_s.strip.empty?
 
@@ -80,9 +90,9 @@ class StreetCredScraperService
 
       #{found_keywords.join(', ')}
 
-      Suggest additional relevant keywords, technologies, and soft skills implied by the posting
+      Suggest 10–15 additional relevant keywords, technologies, and soft skills implied by the posting
       (for example: 'collaboration' → 'teamwork', 'scaling' → 'performance optimization').
-      Return them as a comma-separated list.
+      Return them as a comma-separated list only, no extra text.
     PROMPT
 
     response = client.chat(
@@ -103,7 +113,7 @@ class StreetCredScraperService
     []
   end
 
-  # 🧠 Summarize job posting using OpenAI
+  # ✍️ Summarize job posting
   def summarize_with_openai(job)
     client = OpenAI::Client.new
 
@@ -111,10 +121,10 @@ class StreetCredScraperService
       Summarize this job post as a JSON object with the following keys:
       - title
       - company
-      - responsibilities (as a bullet list)
+      - responsibilities (as a short bullet list)
       - skills_required (as a bullet list)
-      - tone (e.g. technical, casual, energetic, corporate)
-      - summary (1–2 sentences describing the role)
+      - tone (technical, corporate, energetic, etc.)
+      - summary (1–2 sentences describing the role focus and priorities)
 
       === JOB POST TEXT ===
       #{job[:description]}
@@ -125,7 +135,7 @@ class StreetCredScraperService
         model: "gpt-4o-mini",
         temperature: 0.4,
         messages: [
-          { role: "system", content: "You are a professional job description summarizer." },
+          { role: "system", content: "You are a professional job summarizer." },
           { role: "user", content: prompt }
         ]
       }

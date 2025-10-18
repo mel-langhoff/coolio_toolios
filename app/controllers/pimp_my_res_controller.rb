@@ -10,7 +10,7 @@ class PimpMyResController < ApplicationController
   end
 
   def create
-    jobs_url = params[:job_posting_url] || "https://default.jobs.url"
+    job_url = params[:job_posting_url] || "https://default.jobs.url"
 
     # 🔹 Fetch professional data from your internal Professional API
     # professional_data = {
@@ -21,14 +21,14 @@ class PimpMyResController < ApplicationController
     professional_data = ProfessionalFacade.new.get_professional_data
 
     # 🔹 Scrape job posting data
-    @scraped_jobs = StreetCredScraperService.new(jobs_url).cut_product
-    Rails.logger.info "Scraped jobs: #{@scraped_jobs.inspect}"
+    @scraped_job = StreetCredScraperService.new(job_url).cut_product
+    Rails.logger.info "Scraped jobs: #{@scraped_job.inspect}"
 
     # 🔹 Safely extract job body text
-    body_text = @scraped_jobs.first[:description] rescue "No description available."
+    body_text = @scraped_job.first[:description] rescue "No description available."
 
     # 🔹 Build messages for OpenAI
-    messages = build_messages(professional_data, @scraped_jobs, body_text)
+    messages = build_messages(professional_data, @scraped_job, body_text)
 
     # 🔹 Send prompt to OpenAI
     openai = OpenAiService.new
@@ -39,13 +39,13 @@ class PimpMyResController < ApplicationController
       @resume_markdown = @resume_draft
 
       # 🔹 Extract job metadata
-      job_title   = @scraped_jobs.first[:title] rescue "Unknown Title"
-      company     = @scraped_jobs.first[:company] rescue "Unknown Company"
-      description = @scraped_jobs.first[:description] rescue "No description provided."
+      job_title   = @scraped_job.first[:title] rescue "Unknown Title"
+      company     = @scraped_job.first[:company] rescue "Unknown Company"
+      description = @scraped_job.first[:description] rescue "No description provided."
 
       # 🔹 Create Hustle record
       @hustle = Hustle.create!(
-        job_url: jobs_url,
+        job_url: job_url,
         job_title: job_title,
         company: company,
         job_description: description,
@@ -94,59 +94,22 @@ class PimpMyResController < ApplicationController
 
   private
 
-  # 🔹 Builds OpenAI prompt messages
-  def build_messages(professional_data, scraped_jobs, body_text)
+  def build_messages(professional_data, scraped_job, body_text)
+    writing_sample = File.read(Rails.root.join("lib", "assets", "texts", "writing_sample.txt"))
+    base_resume    = File.read(Rails.root.join("lib", "assets", "texts", "base_resume.md"))
+    excluded_words = File.readlines(Rails.root.join("lib", "assets", "texts", "excluded_keywords.txt"), chomp: true)
+    excluded_list  = excluded_words.join(', ')
+
     [
-      { role: "system", content: "You are a professional resume-writing assistant with over thirty years of experience in the IT recruiter field for Ruby on Rails developers and IT project management and technical project manager roles that optimizes for ATS (Applicant Tracking Systems) and includes keywords from words in job postings submitted to you by a user into their resumes and uses their skills and roles to craft new resumes. The user will submit details about themselves to you.." },
-      { role: "user", content: "Here is my professional data including skills, experiences, projects, and personal details:\n#{professional_data.to_json}. Use them to craft or improve on a resume that will land me a job and that will get past and ATS so that I will land my resume in front of a human being's eyes." },
-      { role: "user", content: "What is the name of the company hiring for this role?\n\n#{body_text} Find it." },
-      { role: "user", content: "Craft a resume for me with all of this critera. Follow the format of this resume here mlanghoff@uwalumni.com  |  414-324-7291  |  Boulder, CO  |  [Portfolio](https://www.mel-langhoff.com/)  |  [Github](https://github.com/mel-langhoff)  |  [LinkedIn](https://www.linkedin.com/in/melissalanghoff/)  
----
-
-**Relevant Professional Experience:**  
-**Xcel Energy**  |  *Remote, July 2022 \- November 2022*  
-IT Project Manager
-
-* Developed and implemented new Agile project management systems, tools, and processes, reducing project lifecycles by 1-2 weeks and improving delivery timelines by 24%.
-
-**Sling TV**  |  *Hybrid/Denver, CO, February 2022 \- May 2022*  
-Program Manager
-
-* Optimized IT and advertising projects using Agile, Scrum, and Kanban methodologies, resulting in a 20% productivity boost and improved project outcomes.
-
-**Crocs**  |  *Niwot, CO, September 2019 \- April 2020*  
-SAP Project Manager
-
-* Led a 45-member cross-functional internal team and third-party vendors in migrating SAP environments to the SAP HANA Enterprise Cloud.  
-* Crafted comprehensive testing schedules and cutover plans, ensuring seamless transitions and minimal downtime during go-live.
-
-**Sovos Compliance**  |  *Atlanta, GA, April 2017 \- January 2019*  
-Project Manager, Implementation Consultant, & Junior SAP FI Consultant
-
-* Integrated SaaS SAP ERP solutions for Fortune 500 companies, including eInvoicing, eAccounting, and tax compliance software for LATAM countries and Mexico.  
-* Created bilingual training materials and led training sessions, improving client satisfaction and reducing tax errors while enhancing operational efficiency.
-
-
-**Projects:**   
-**Personal Portfolio**, Solo Project  |  [Repository](https://github.com/mel-langhoff/resume)  |  [Demo Link](https://www.mel-langhoff.com/)  
-A Ruby on Rails application hosted on Heroku that includes a resume, portfolio, and examples of frontend & backend skills, utilizing ActiveRecord, Bootstrap, Postman, RSpec, and Ruby gems.  
-**Battleship**, Group Project  |  [Repository](https://github.com/mel-langhoff/battleship)  
-A Ruby application that is a one player game of Battleship that is played in the Terminal.
-
-**Education:**   
-**Turing School of Software & Design  |**  *Remote, October 2023 \- September 2024*  
-Backend Engineering Certificate  
-**University of Wisconsin-Madison**  |  *Madison, WI, May 2016*  
-Bachelor of Arts in Linguistics; Bachelor of Arts in Spanish
-
-**Skills:**  
-**Programming Languages & Methodologies:** ActiveRecord, CSS, HTML, JSON, Object-Oriented Programming, Ruby, Ruby on Rails, SQL, Test-Driven Development, XML  
-**Tools & Technologies:** Adobe Creative Suite, APIs, Docker, Git, Google Suite, Heroku, Microsoft Office, PostgreSQL, Postman, Salesforce, WordPress  
-**Workflow Tools:** Asana, Confluence, Github Projects, JIRA, Monday, Rally, ServiceNow, Slack, SharePoint, SmartSheet, Trello  
-**Professional Skills:** Agile Project Management, Business Process Improvement, Change Management, Communication, Kanban, Leadership, QA Testing, Scrum, Software Development Life Cycle (SDLC), Stakeholder Management, Vendor Management  
-**Spoken Languages:** Spanish \- bilingual in business and conversation  
-**Interests:** Cooking, cycling, languages, literature, snowshoeing  and make the format a .docx file so I can edit it." }
-      # { role: "user", content: "Please generate a resume that naturally includes relevant keywords from the job description and highlights my matching experience and skills, formatted in Markdown." }
+      { role: "system", content: "You are a professional resume-writing assistant with over thirty years of experience looking at, writing, and hiring people in the IT field for software developers, project managers, SAP, and anything else IT..." },
+      { role: "user", content: "Here is a short writing sample that represents my tone, used punctuation, type of word usage and adjective and syntax choices, and overall type and cool and bitchin' style:\n\n#{writing_sample}, so please attempt to replicate as best as you can but nobody can beat the best, can they?" },
+      { role: "user", content: "Here is my professional data including skills, experiences, projects, and personal details:\n#{professional_data.to_json}, so use these and emphasize them in the resume and really dig deep, but avoid using typical and stereotypical resume buzzwords but make it sound human, fancy, and 100% fuckin' bitchin'" },
+      { role: "user", content: "Here is the job posting I want to tailor my resume for:\n#{scraped_job.to_json}" },
+      { role: "user", content: "Use the following as my baseline resume format. Update it to match the job posting while keeping my tone and layout:\n\n#{base_resume}. Keep it so the resume is under one page. Alphabetize the skills and arrange the jobs in order by most recent the least recent. Avoid using the following words or phrases in the final text: #{excluded_list}. Keep the format exactly the same please! I love you ,chat!" }
     ]
   end
+
+
+
+
 end
