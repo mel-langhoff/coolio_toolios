@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get 'pimp_my_res/show', to: 'pimp_my_res#show', as: :pimp_my_res_show
   get '/chatbot', to: 'xzibit#index', as: :xzibit
 
+get "/pimp_my_res/:id/pdf", to: "pimp_my_res#pdf", as: :pdf_pimp_my_res
+
+get '/pimp_my_res/:id/pdf_test', to: 'pimp_my_res#pdf', as: :pimp_my_res_pdf_test
+
   get 'hustles', to: 'hustles#index'
   get 'hustles/show', to: 'hustles#show'
   get 'hustles/new', to: 'hustles#new'

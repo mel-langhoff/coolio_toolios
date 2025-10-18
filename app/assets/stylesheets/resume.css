@@ -1,0 +1,56 @@
+body {
+  font-family: Arial, Helvetica, sans-serif, serif;
+  color: #222;
+  margin: 40px 60px;
+  line-height: 1.4;
+  font-size: 12pt;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 22pt;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.header p {
+  margin: 4px 0;
+  font-size: 11pt;
+}
+
+.header a {
+  color: #0044cc;
+  text-decoration: none;
+}
+
+.header a:hover {
+  text-decoration: underline;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #aaa;
+  margin: 15px 0;
+}
+
+.resume-pdf {
+  margin-top: 15px;
+}
+
+/* --- BULLET FIX FOR WICKED_PDF --- */
+ul {
+  list-style-type: disc !important;   /* normal bullets */
+  list-style-position: outside !important;
+  margin-left: 20px !important;
+  padding-left: 20px !important;
+}
+
+li {
+  display: list-item !important;      /* ensures bullets render */
+  line-height: 1.3;                   /* consistent spacing */
+  margin-bottom: 3px;
+}
