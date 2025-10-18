@@ -1,4 +1,5 @@
 ##Relevant Professional Experience:##
+
 #Private Tutor#  |  *Remote, August 2020 - October 2023*
 
 • Delivered customized instruction tailored to students aged 4-18, addressing their specific learning styles and academic objectives. Utilized skills in Spanish, Google Docs, customer service, teaching methodologies, teamwork, and management to create engaging learning environments, whether through small group sessions or individual tutoring.
@@ -76,22 +77,27 @@ Project Manager, Implementation Consultant, & Junior SAP FI Consultant
 
 
 #Projects:#   
+
 #Personal Portfolio#, Solo Project  |  [Repository](https://github.com/mel-langhoff/resume)  |  [Demo Link](https://www.mel-langhoff.com/)  
 A Ruby on Rails application hosted on Heroku that includes a resume, portfolio, and examples of frontend & backend skills, utilizing ActiveRecord, Bootstrap, Postman, RSpec, and Ruby gems.  
 #Battleship#, Group Project  |  [Repository](https://github.com/mel-langhoff/battleship)  
-A Ruby application that is a one player game of Battleship that is played in the Terminal.
+A Ruby application that is a one player game of Battleship that is played in the Terminal. 
+
 
 #Education:#   
+
 •Turing School of Software & Design  |  *Remote, September 2024*  
 Backend Engineering Certificate  
 
 •University of Wisconsin-Madison  |  *Madison, WI, May 2016*  
 Bachelor of Arts in Linguistics; Bachelor of Arts in Spanish
 
+
 #Skills:#  
+
 • Programming Languages & Methodologies:# ActiveRecord, CSS, HTML, JSON, Object-Oriented Programming, Ruby, Ruby on Rails, SQL, Test-Driven Development, XML  
 • Tools & Technologies: Adobe Creative Suite, APIs, Docker, Git, Google Suite, Heroku, Microsoft Office, PostgreSQL, Postman, Salesforce, WordPress  
 • Workflow Tools:# Asana, Confluence, Github Projects, JIRA, Monday, Rally, ServiceNow, Slack, SharePoint, SmartSheet, Trello  
-• Professional Skills: Agile Project Management, Business Process Improvement, Change Management, Cloud Migration, Communication, Customer Service, Cutover Planning, Employee Training,v Instructional Design, Kanban, Leadership, Management, Public Speaking, Research, Scrum, Social Media Management, Software Development Life Cycle (SDLC), SAP FI, SAP Integration, Stakeholder Management, Strategic Planning, Teaching, Teamwork, Training, Translation, User Stories, Vendor Management, Waterfall Project Management
+• Professional Skills: Agile Project Management, Business Process Improvement, Change Management, Cloud Migration, Communication, Customer Service, Cutover Planning, Employee Training,v Instructional Design, Kanban, Leadership, Management, Public Speaking, Research, Scrum, Social Media Management, Software Development Life Cycle (SDLC), SAP FI, SAP Integration, Stakeholder Management, Strategic Planning, Teaching, Teamwork, Training, Translation, User Stories, Vendor Management, Waterfall Project Management, Wed Applications
 • Spoken Languages: Spanish - bilingual in business and conversation  
 • Interests: Cooking, cycling, languages, literature, snowshoeing
