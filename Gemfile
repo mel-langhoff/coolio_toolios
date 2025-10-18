@@ -47,6 +47,8 @@ gem "faker"
 gem "dotenv-rails"
 gem 'jquery-rails'
 gem 'ruby-openai'
+gem 'httparty'
+gem 'ferrum'
 
 
 
