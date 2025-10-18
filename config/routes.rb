@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
 get "/pimp_my_res/:id/pdf", to: "pimp_my_res#pdf", as: :pdf_pimp_my_res
 
+get '/pimp_my_res/:id/pdf_test', to: 'pimp_my_res#pdf', as: :pimp_my_res_pdf_test
 
   get 'hustles', to: 'hustles#index'
   get 'hustles/show', to: 'hustles#show'
