@@ -1,4 +1,3 @@
-
 **Relevant Professional Experience:**  
 **Xcel Energy**  |  *Remote, July 2022 \- November 2022*  
 IT Project Manager

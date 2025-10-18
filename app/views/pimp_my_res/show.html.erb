@@ -1,17 +1,5 @@
 <div class="resume-output">
-# <h1>Finna get ya a job</h1>
-# <h2>Hustle for <%= @hustle.job_title %> at <%= @hustle.company %></h2>
-# <p><strong>Job URL:</strong> <%= @hustle.job_url %></p>
-# <p><strong>Description:</strong> <%= @hustle.job_description %></p>
 
-# <h2>Generated Resume</h2>
-# <pre><%= @resume_draft %></pre>
-
-# <h2>Structured Resume Data</h2>
-# <pre><%= JSON.pretty_generate(@hustle.resume) %></pre>
-
-# <%= link_to "Do it again", pimp_my_res_path, class: "btn btn-primary" %>
-# </div>
 <br>
 <div class="resume-content">
   <pre style="white-space: pre-wrap; font-family: monospace;"><%= @resume_draft %></pre>
