@@ -73,6 +73,7 @@ Project Manager, Implementation Consultant, & Junior SAP FI Consultant
 - Put up with a lot of bullshit
 - Grew outside of my comfort zone
 - Was on three phone calls at once one time
+- Triaged issues with developers and SAP consultants in English and Spanish according in internal and external factors, clients' needs, and resource availability and tax compliance dates and shit like that
 
 ### Projects:  
 
