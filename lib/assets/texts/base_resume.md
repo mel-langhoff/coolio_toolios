@@ -77,10 +77,16 @@ Project Manager, Implementation Consultant, & Junior SAP FI Consultant
 
 ### Projects:  
 
-- Battleship, Group Project  |  [Repository](https://github.com/mel-langhoff/battleship)  
-    A Ruby application that is a one player game of Battleship that is played in the Terminal.
+<!-- - Battleship, Group Project  |  [Repository](https://github.com/mel-langhoff/battleship)  
+    A Ruby application that is a one player game of Battleship that is played in the Terminal. -->
 - Black Thursday, Independent Project  |  [Repository](https://github.com/mel-langhoff/black_thursday)
     A Ruby application that manages business data and executes business intelligence queries against data from a typical ecommerce biz scenarios on a large scale using formulas, database CRUD operations, and light analytics.
+- Pimp My Res, Independent Project  |  [Repisotory](https://github.com/mel-langhoff/coolio_toolios)
+    A resume optimizer using the OpenAI API and a custom API built with Ruby on Rails that scrapes job postings, analyzes keywords, and generates a tailored, ATS-friendly resume. It features extracted job data, an exported PDF using WickedPDF, and application tracking. This resume was built with the Pimp My Res application.
+<!-- - Connect Four, Group Project  |  [Repository](https://github.com/mel-langhoff/connect_four)
+    A Ruby application that is a one player game of Connect Four that is played in the Terminal. -->
+- Portfolio, Independent Project  |  [Repository](https://github.com/mel-langhoff/resume)
+    Custom domain, at [mel-langhoff.com](www.mel-langhoff.com), reflecting my personal brand and providing a professional online presence.
 
 ### Education: 
 

@@ -5,3 +5,15 @@ A quick learner, I am eager to jump into new things head first, ready to investi
 My strengths are my persistence to find answers, my willingness to learn, my passion for finding the optimal solution, and my flexibility and adaptability. I am a problem-solver driven by excellent solution that is able to acclimate to a team's or a company's culture. I built my own API and leveraged the OpenAI API to build a resume optimizer to apply for software developer jobs, saving time and customizing my resume for specific job postings. I am passionate about lifelong learning and teaching, believing that there is never a moment where learning cannot happen. Information and improvement are always a whisper in the wind.
 
 A philosophy that I hold, as preivously stated in the paragraph above, is that we are always learning. It never stops. One way I like to continue to learn is by teaching. Even though I may already "know" the material, there could be something that I overlook, have forgotten, or there may be basic thing I overlook. There is always something new to explore, to learn, and to teach. We learn by teaching, and we teach by learning. It's a great relationship.
+
+About Me
+
+From my hometown of Milwaukee, WI to a picturesque mountain town in Colorado, my journey with technology has been a blend of diverse experiences and a profound interest in continual learning. I'm Mel Langhoff — a backend web developer, project manager, linguist, and life-long student.
+
+My career began in technology project management and IT consulting, where I mastered Agile methodologies, cloud migration, and SAP systems through roles at Xcel Energy, Sling TV, Crocs, and Sovos Compliance. Each project presented unique challenges and opportunities to innovate.
+
+My passion for languages and teaching has been a constant thread. Fluent in Spanish, my experience teaching English in Barcelona enriched my communication and empathy skills. These lessons — patience, clarity, and a love for learning — fuel my approach to coding and collaboration.
+
+Transitioning to backend development at Turing School of Software & Design was natural. I've harnessed my technical skills and project management expertise to build robust, user-centric applications that bridge technology and user needs.
+
+Outside of work, I’m an avid cyclist and skateboarder, a food and cooking enthusiast, and a lover of literature and languages. These hobbies inspire creativity and perseverance — qualities I bring into every project. My journey exemplifies the power of diverse experiences and lifelong growth, and I remain committed to leveraging my skills to make meaningful impact in tech and beyond.

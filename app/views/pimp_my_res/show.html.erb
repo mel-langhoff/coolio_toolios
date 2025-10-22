@@ -1,8 +1,10 @@
+<%= link_to "Download as PDF",
+            pimp_my_res_pdf_test_path(@hustle.id, format: :pdf),
+            class: "btn btn-primary",
+            download: "Melissa_Langhoff_resume.pdf" %>
 
-<%= link_to "Download as PDF", pdf_pimp_my_res_path(@hustle, format: :pdf),
-            class: "btn btn-primary ", target: "_blank" %>
 <br>
+
 <div class="resume-content">
   <%= markdown(@resume_draft).html_safe %>
 </div>
-
