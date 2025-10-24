@@ -94,23 +94,59 @@ class PimpMyResController < ApplicationController
 
 def pdf
   @hustle = Hustle.find(params[:id])
+  company_name = @hustle.company&.parameterize || "resume"
+  base_filename = "Melissa_Langhoff_Resume.pdf"
 
-  html = render_to_string(
+  # 📁 Save to Windows Downloads/<company_name>/
+  downloads_path = "/mnt/c/Users/mlang/Downloads/#{company_name}"
+  FileUtils.mkdir_p(downloads_path)
+
+  pdf_html = render_to_string(
     template: "pimp_my_res/pdf",
     layout: "pdf",
     locals: { hustle: @hustle }
   )
 
-render pdf: "Melissa_Langhoff_resume",
-       disposition: "attachment",  # forces download
-       template: "pimp_my_res/pdf",
-       layout: "pdf",
-       page_size: 'Letter',
-       margin: { top: 15, bottom: 15, left: 15, right: 15 },
-       encoding: "UTF-8",
-       locals: { hustle: @hustle }
+  pdf_file = WickedPdf.new.pdf_from_string(
+    pdf_html,
+    page_size: "Letter",
+    margin: { top: 15, bottom: 15, left: 15, right: 15 },
+    encoding: "UTF-8"
+  )
 
+  full_path = File.join(downloads_path, base_filename)
+  File.open(full_path, "wb") { |f| f << pdf_file }
+
+  send_data pdf_file,
+            filename: base_filename,
+            type: "application/pdf",
+            disposition: "attachment"
+
+  Rails.logger.info("✅ PDF saved to: #{full_path}")
 end
+
+
+
+
+# def pdf
+#   @hustle = Hustle.find(params[:id])
+
+#   html = render_to_string(
+#     template: "pimp_my_res/pdf",
+#     layout: "pdf",
+#     locals: { hustle: @hustle }
+#   )
+
+# render pdf: "Melissa_Langhoff_resume",
+#        disposition: "attachment",  # forces download
+#        template: "pimp_my_res/pdf",
+#        layout: "pdf",
+#        page_size: 'Letter',
+#        margin: { top: 15, bottom: 15, left: 15, right: 15 },
+#        encoding: "UTF-8",
+#        locals: { hustle: @hustle }
+
+# end
 
 
 
