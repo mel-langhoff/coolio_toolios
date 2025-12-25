@@ -1,0 +1,19 @@
+<% content_for :title, "Melissa Langhoff – Resume" %>
+
+<div class="header">
+  <h1>Melissa Langhoff</h1>
+  <p>
+    mlanghoff@uwalumni.com  |  
+    414-324-7291  |  
+    Boulder, CO  |  
+    <a href="https://mel-langhoff.com" target="_blank">Portfolio</a> |  
+    <a href="https://linkedin.com/in/mel-langhoff" target="_blank">LinkedIn</a> |  
+    <a href="https://github.com/mel-langhoff" target="_blank">GitHub</a>
+  </p>
+</div>
+
+<hr>
+
+<div class="resume-pdf">
+  <%= markdown(@hustle.resume&.[](:generated_resume) || @hustle.resume&.[]("generated_resume") || "Resume not found") %>
+</div>

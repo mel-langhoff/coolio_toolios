@@ -1,56 +1,200 @@
-require 'nokogiri'
-require 'open-uri'
+require "httparty"
+require "nokogiri"
+require "ferrum"
+require "json"
+require_relative "company_name_extractor_service"
+require "openai"
 
 class StreetCredScraperService
-  KEYWORDS = %w[
-    Ruby Rails JavaScript React SQL AWS Docker Kubernetes Python Git REST API
-    communication teamwork "problem solving" leadership collaboration
-    experience responsibilities requirements qualifications projects deliverables deadlines
-    developed designed implemented managed optimized automated tested
-    engineer developer manager consultant analyst
+  BASE_KEYWORDS = %w[
+    Ruby Rails SQL Docker Git REST_API HTML CSS JSON
+    Agile Scrum Kanban SDLC OOP Postgres PostgreSQL Heroku
+    APIs Testing RSpec Automation Optimization Debugging QA
+    Teamwork Leadership Collaboration Communication Management
+    Problem-solving Strategy Stakeholders Deliverables Deadlines
+    SAP ERP Integration Cloud Migration
+    Project Manager Consultant Developer Engineer Analyst
+    Backend Fullstack
+    Spanish Bilingual
+    Teaching Training Mentorship
   ].freeze
+
+  USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "\
+                "AppleWebKit/537.36 (KHTML, like Gecko) "\
+                "Chrome/120.0 Safari/537.36"
 
   def initialize(url)
     @url = url
   end
 
-  def cut_product
-    html = URI.open(@url)
-    doc = Nokogiri::HTML(html)
+  # Main scraper entry point
+  def cut_product(include_summary: false)
+    html = fetch_html
+    doc  = Nokogiri::HTML(html)
 
-    # Extract entire text from the page body
-    page_text = doc.at('body')&.text&.downcase || ""
+    title       = doc.at("title")&.text&.strip || "Untitled Job"
+    company     = CompanyNameExtractorService.new(html).extract
+    description = extract_description(doc)
 
-    # Find keywords in the whole page text
-    found_keywords = KEYWORDS.select { |kw| page_text.include?(kw.downcase) }
-
-    # Attempt to extract title from <title> tag or use fallback
-    title = doc.at('title')&.text&.strip || "Untitled Job"
-
-      [{
-        title: title,
-        url: @url,
-        keywords: found_keywords
-      }]
-    rescue OpenURI::HTTPError => e
-      puts "⚠️ Failed to scrape #{@url}: #{e.message}"
-      []
-    rescue => e
-      puts "⚠️ Unexpected error: #{e.message}"
-      []
+    # 🔹 Base keyword matching
+    found_keywords = BASE_KEYWORDS.select do |kw|
+      doc.at("body")&.text&.downcase&.include?(kw.downcase)
     end
-  end
 
+    # 🔹 AI-enhanced keywords
+    ai_keywords = enhance_keywords_with_openai(description, found_keywords)
+
+    job = {
+      title: title,
+      url: @url,
+      company: company,
+      description: description,
+      keywords: (found_keywords + ai_keywords).uniq
+    }
+
+    # Optional summary — disabled by default
+    if include_summary
+      summarized_job = summarize_with_openai(job)
+      [job.merge(summary: summarized_job)]
+    else
+      [job]
+    end
+  rescue => e
+    puts "Error scraping: #{e.message}"
+    []
+  end
 
   private
 
-  def fetch_job_description_text(job_url)
-    html = URI.open(job_url)
-    doc = Nokogiri::HTML(html)
-    # Adjust selector to the job description container on the job page
-    description_node = doc.at_css('.job-description') || doc.at_css('.description') || doc.at('body')
-    description_node ? description_node.text.strip : ""
+  # -----------------------------------------
+  # Step 1: Fetch HTML (fallback to Ferrum for JS-heavy pages)
+  # -----------------------------------------
+  def fetch_html
+    html = fast_fetch
+    return html unless needs_render?(html)
+
+    puts "⚙️ Falling back to Ferrum for full JS render..."
+    render_with_ferrum
+  end
+
+  def fast_fetch
+    HTTParty.get(@url, headers: { "User-Agent" => USER_AGENT }).body
   rescue
     ""
-end
+  end
 
+  def needs_render?(html)
+    html.nil? ||
+      html.strip.length < 500 ||
+      html.match?(/<script|window\.__INITIAL_STATE__|webpackJsonp|__NEXT_DATA__/)
+  end
+
+  def render_with_ferrum
+    browser = Ferrum::Browser.new(headless: true, browser_options: { "no-sandbox" => nil })
+    browser.goto(@url)
+    sleep 2
+    html = browser.body
+    browser.quit
+    html
+  rescue => e
+    browser&.quit
+    puts "Ferrum render error: #{e.message}"
+    ""
+  end
+
+  # -----------------------------------------
+  # Step 2: Extract job description text
+  # -----------------------------------------
+  def extract_description(doc)
+    selectors = [
+      "section.job_description",
+      "div.job_description",
+      "div.jobDescriptionSection",
+      "div.jobDesc",
+      "div.job-body",
+      "article",
+      "main",
+      "body"
+    ]
+    node = selectors.map { |s| doc.at_css(s) }.compact.first
+    text = node ? node.text.strip : ""
+    text.gsub(/\s+/, " ").strip
+  rescue
+    ""
+  end
+
+  # -----------------------------------------
+  # Step 3: AI Keyword enhancement
+  # -----------------------------------------
+  def enhance_keywords_with_openai(description, found_keywords)
+    return [] if description.to_s.strip.empty?
+
+    client = OpenAI::Client.new
+    prompt = <<~PROMPT
+      Given this job posting text:
+
+      #{description}
+
+      And these extracted keywords:
+
+      #{found_keywords.join(', ')}
+
+      Suggest 10–15 additional relevant keywords, technologies, and soft skills implied by the posting.
+      Example: 'collaboration' → 'teamwork', 'scaling' → 'performance optimization'.
+      Return them as a comma-separated list only.
+    PROMPT
+
+    response = client.chat(
+      parameters: {
+        model: "gpt-4o-mini",
+        temperature: 0.4,
+        messages: [
+          { role: "system", content: "You are a professional keyword extraction assistant." },
+          { role: "user", content: prompt }
+        ]
+      }
+    )
+
+    ai_text = response.dig("choices", 0, "message", "content") || ""
+    ai_text.split(/,\s*/).map(&:strip).reject(&:empty?)
+  rescue => e
+    puts "Keyword enhancement error: #{e.message}"
+    []
+  end
+
+  # -----------------------------------------
+  # Step 4: Summarize job posting (optional)
+  # -----------------------------------------
+  def summarize_with_openai(job)
+    client = OpenAI::Client.new
+
+    prompt = <<~PROMPT
+      Summarize this job post as JSON with keys:
+      - title
+      - company
+      - responsibilities (as bullet list)
+      - skills_required (as bullet list)
+      - tone (e.g., technical, corporate, energetic)
+      - summary (1–2 sentences summarizing focus)
+
+      === JOB POST TEXT ===
+      #{job[:description]}
+    PROMPT
+
+    response = client.chat(
+      parameters: {
+        model: "gpt-4o-mini",
+        temperature: 0.4,
+        messages: [
+          { role: "system", content: "You are a professional job summarizer." },
+          { role: "user", content: prompt }
+        ]
+      }
+    )
+
+    JSON.parse(response.dig("choices", 0, "message", "content"))
+  rescue => e
+    puts "OpenAI summary error: #{e.message}"
+    {}
+  end
+end

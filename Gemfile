@@ -42,10 +42,17 @@ gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-gem "bootstrap" 
+# gem "bootstrap" 
 gem "faker"
 gem "dotenv-rails"
 gem 'jquery-rails'
+gem 'ruby-openai'
+gem 'httparty'
+gem 'ferrum'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem 'redcarpet'
+
 
 
 
@@ -60,6 +67,7 @@ gem "shoulda-matchers"
 gem "faraday"
 gem "nokogiri"
 gem 'redcarpet'
+
 
 
 group :development, :test do

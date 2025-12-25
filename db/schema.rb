@@ -10,18 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_18_195758) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_19_143323) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "different_area_code_hoes", force: :cascade do |t|
-    t.string "title"
-    t.string "url"
-    t.string "description"
-    t.date "date_accessed"
+  create_table "hustles", force: :cascade do |t|
+    t.string "job_title"
+    t.string "company"
+    t.string "job_description"
+    t.jsonb "resume"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
+    t.datetime "applied_on"
+    t.string "job_url"
   end
 
 end

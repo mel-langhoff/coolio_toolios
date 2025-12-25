@@ -1,7 +1,7 @@
 class ProfessionalApiService
 
   def conn
-    Faraday.new(url: "http://localhost:3000") do |faraday|
+    Faraday.new(url: "http://localhost:3001") do |faraday|
       faraday.headers["Content-Type"] = "application/json"
       faraday.adapter Faraday.default_adapter
     end

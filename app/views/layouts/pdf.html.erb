@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= content_for?(:title) ? yield(:title) : "Melissa Langhoff – Resume" %></title>
+    <%= wicked_pdf_stylesheet_link_tag "resume" %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

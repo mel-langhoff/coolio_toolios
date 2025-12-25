@@ -1,0 +1,16 @@
+<!-- app/views/hustles/index.html.erb -->
+<h1>Your Hustles</h1>
+
+<%= link_to "New Hustle", new_hustle_path, class: "btn" %>
+
+<ul>
+  <% @hustles.each do |hustle| %>
+    <li>
+      <strong><%= hustle.job_title %></strong> at <%= hustle.company %> —
+      <%= link_to "View", hustle_path(hustle) %>
+      <%= link_to "Edit", edit_hustle_path(hustle) %>
+      <%= link_to "Delete", hustle_path(hustle), method: :delete, data: { confirm: "Sure?" } %>
+    </li>
+  <% end %>
+</ul>
+ë

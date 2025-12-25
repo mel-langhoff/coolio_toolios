@@ -7,7 +7,7 @@ RSpec.describe StreetCredScraperService, type: :service do
   describe '#cut_product', :vcr do
     it 'returns an array of job listings' do
       results = service.cut_product
-
+# require 'pry'; binding.pry
       expect(results).to be_an(Array)
       expect(results.size).to be > 0
     end
